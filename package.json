@@ -1,0 +1,20 @@
+{
+  "name": "codecook",
+  "version": "0.0.1",
+  "description": "easily add / delete code lines in code files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ablesoftwaredev/codecook.git"
+  },
+  "keywords": [],
+  "author": "AbleSoftwareDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ablesoftwaredev/codecook/issues"
+  },
+  "homepage": "https://github.com/ablesoftwaredev/codecook#readme"
+}
