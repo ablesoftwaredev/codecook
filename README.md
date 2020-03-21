@@ -1,1 +1,2 @@
-codecook
+# codecook
+early prototype under development...
