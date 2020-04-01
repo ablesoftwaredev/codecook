@@ -1,6 +1,6 @@
 {
   "name": "codecook",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "easily add / delete code lines in code files",
   "main": "index.js",
   "scripts": {
