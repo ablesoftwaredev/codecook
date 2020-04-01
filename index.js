@@ -12,7 +12,6 @@
  */
 const fs = require("fs")
 const path = require("path")
-const vscode = require("vscode")
 
 
 const insert = function(codeData) {
@@ -59,16 +58,42 @@ const insert = function(codeData) {
  * @param {string} codeToInject   code snippet to be injected
 **/
 const inject = function(targetFilePath, searchPattern, codeToInject) {
-    // get target file path
-    // get search pattern
-    // get code to inject
-    // get inject level (above / below)
     // open target file
-    // read its code in an array
-    // loop through each line in array and check if search pattern is found
-    // if found, insert code above / below the line index
-    // make a string from the array
-    // fs.writeFile the string in target file
+    fs.readFile(targetFilePath, (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            // read its code in an array
+            let code = data.toString()
+            let codeArray = code.split('\n')
+            let insertIndex = -1
+            // loop through each line in array and check if search pattern is found
+            codeArray.forEach((line) => {
+                if(line.includes(searchPattern))
+                {
+                    insertIndex = codeArray.indexOf(line)
+                }
+            })
+            // if found, insert code above / below the line index
+            if(insertIndex !== -1)
+            {
+                codeArray.splice(insertIndex+1, 0, codeToInject)
+            } else {
+                console.log('search pattern not found')
+            }
+            // make a string from the array
+            codeString = codeArray.join('\n')
+            // fs.writeFile the string in target file
+            fs.writeFile(targetFilePath, codeString, (error) => {
+                if (error === null)
+                {
+                    console.log('code injected successfully')
+                } else {
+                    console.log(err)
+                }
+            })
+        }
+    })
 }
 
 module.exports = { insert, inject }

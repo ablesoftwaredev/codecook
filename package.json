@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/ablesoftwaredev/codecook/issues"
   },
-  "homepage": "https://github.com/ablesoftwaredev/codecook#readme"
+  "homepage": "https://github.com/ablesoftwaredev/codecook#readme",
+  "dependencies": {}
 }
