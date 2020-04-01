@@ -1,6 +1,6 @@
 # codecook
 
-Makes it easy to add code snippets to specified code file.
+Makes it easy to add code snippets to specified code file. 
 
 #### Following file types tested so far:
 - .py
@@ -19,14 +19,22 @@ const codecook = require('codecook')
 
 // specify params
 const targetFilePath = 'absolutePath/to/target/file'
-const searchPattern = 'some pattern'
-const codeToInject = 'this is some code'
+const payloadArray = [
+    {
+        // tabs is how much indentation you want for injected code
+        // 0 is the default. same indentation as search pattern code line.
+        "tabs": 0,  
+        "searchPattern" : "search some code line",
+        "injection": "code to inject"
+    }
+]
 
 // inject code
-codecook.inject(targetFilePath, searchPattern, codeToInject) // check console for message on completion
+// code is injected below the search pattern code line
+// check console for message on completion
+codecook.inject(targetFilePath, payloadArray) 
 ```
 
+Suggestions, bugs, enhancements are most welcome via PR. Hope you find this library helpful!
 
-This is an early prototype and needs more testing. 
 
-Suggestions, bugs, enhancements are most welcome via PR! Thanks for your contributions. 
