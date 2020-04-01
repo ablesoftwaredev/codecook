@@ -21,9 +21,11 @@ const codecook = require('codecook')
 const targetFilePath = 'absolutePath/to/target/file'
 const payloadArray = [
     {
-        // tabs is how much indentation you want for injected code
+        // indent is how much indentation you want for injected code
+        // it is number of spaces
         // 0 is the default. same indentation as search pattern code line.
-        "tabs": 0,  
+        // for a tab you can specify indent as 4 or 2 depending on your IDE 
+        "indent": 0,  
         "searchPattern" : "search some code line",
         "injection": "code to inject"
     }
