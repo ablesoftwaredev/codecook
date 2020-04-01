@@ -52,4 +52,23 @@ const insert = function(codeData) {
     return codeString
 }
 
-module.exports = { insert }
+/**
+ * insert code in specified file using search expression
+ * @param {string} targetFilePath Path to codefile to be modified
+ * @param {string} searchPattern  Search pattern in codefile
+ * @param {string} codeToInject   code snippet to be injected
+**/
+const inject = function(targetFilePath, searchPattern, codeToInject) {
+    // get target file path
+    // get search pattern
+    // get code to inject
+    // get inject level (above / below)
+    // open target file
+    // read its code in an array
+    // loop through each line in array and check if search pattern is found
+    // if found, insert code above / below the line index
+    // make a string from the array
+    // fs.writeFile the string in target file
+}
+
+module.exports = { insert, inject }

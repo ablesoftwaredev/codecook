@@ -1,0 +1,2 @@
+const codecook = require('./index')
+
