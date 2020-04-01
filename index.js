@@ -70,14 +70,10 @@ const inject = function(targetFilePath, payloadArray) {
 
             // string representation of tabs to insert
             let tabString = ""
-            let tabsCount = 0
 
             // code to be injected with tabs prefixed
             // this addes code with proper indentation
             let tabbedInjection = ""
-
-            // console.log(codeArray)
-            // console.log(`insertIndex: ${insertIndex}`)
 
             // loop through the payloadArray and perform all injections
             payloadArray.forEach(payload => {
@@ -88,27 +84,25 @@ const inject = function(targetFilePath, payloadArray) {
                         insertIndex = codeArray.indexOf(line) + 1 // TODO: add if / else for inject above or below search pattern
                         // find number of tabs before search pattern line
                         // this will be the base tabs count for code injection lines
-                        // console.log(`line:${line}`)
                         for (let index = 0; index < line.length; index++) {
                             if (line.charCodeAt(index) == 32) {
-                                // console.log(line.charCodeAt(index))
-                                tabsCount += 1
                                 tabString += " "
                             } else {
                                 break
                             }
                         }
-                        // console.log(`line:${line}`)
-                        // console.log(`tabsCount: ${tabsCount}`)
-                        // console.log(`tabString.length: ${tabString.length}`)
-                        // console.log(`tabString:${tabString}abc`)
+                        // add payload's tabs to tabString
+                        for (let index = 0; index < payload.tabs; index++) {
+                            tabString += " "
+                        }
 
-                        // prefix tabs with tabbedInjection
-                        // for (const codeLine of payload.injection) {
-                        //     tabbedInjection += (tabString + codeLine)
-                        // }
-                        tabbedInjection += (`${tabString}${payload.injection}`)
-                        // console.log(`tabbedInjection:${tabbedInjection}`)
+                        // prefix tabs with each line in payload.injection
+                        let injectionArray = payload.injection.split('\n')
+                        let paddedInjectionArray = injectionArray.map((injection) => {
+                            return (tabString + injection)
+                        })
+                        // convert paddedInjectionArray into string
+                        tabbedInjection = paddedInjectionArray.join('\n')
                     }
                 })
                 // if search pattern is found, perform code injection
@@ -121,23 +115,16 @@ const inject = function(targetFilePath, payloadArray) {
                     // reset values for next payload iteration
                     insertIndex = -1
                     tabString = ''
-                    tabsCount = 0
                     tabbedInjection = ''
                 }
             })
-            // console.log(`codeArray: ${codeArray}`)
 
-            // make a string from the array
+            // make a string from the codeArray
             let codeString = ""
             codeString = codeArray.join('\n')
             // fs.writeFile the string in target file
             fs.writeFile(targetFilePath, codeString, (error) => {
-                if (error === null)
-                {
-                    console.log('code injections successfull')
-                } else {
-                    console.log(err)
-                }
+                error === null ? console.log('code injections successfull') : console.log(err);
             })
             codeString = ''
         }
