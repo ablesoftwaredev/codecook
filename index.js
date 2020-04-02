@@ -53,7 +53,7 @@ const insert = function(codeData) {
 /**
  * loops over the payloadArray and injects code snippets at specified patterns
  * @param {string} targetFilePath Path to codefile to be modified
- * @param {string[]} payloadArray  objects array with search patterns & code injections
+ * @param {Array} payloadArray  objects array with search patterns & code injections
  **/
 const inject = function(targetFilePath, payloadArray) {
     // open target file
