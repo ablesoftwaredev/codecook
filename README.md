@@ -27,11 +27,13 @@ const payloadArray = [
         // for a tab you can specify 4 or 2 depending on your IDE 
         "tabs": 0,  
         "searchPattern" : "search some code line",
-        "injection": "code to inject"
+        "injection": "code to inject",
+        // do you want to inject code above search pattern code line or below it?
+        // by default, code is injected below
+        "injectAbove": false
     }
 ]
 
-// inject code
 // code is injected below the search pattern code line
 // check console for message on completion
 codecook.inject(targetFilePath, payloadArray) 
