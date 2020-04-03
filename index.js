@@ -37,7 +37,7 @@ const inject = function(targetFilePath, payloadArray) {
                 codeArray.forEach(line => {
                     if (line.includes(payload.searchPattern)) {
                         // insertIndex stores the index for adding code injection
-                        if(payload.injectAbove){
+                        if (payload.injectAbove) {
                             // inject code snippet above search pattern code line
                             insertIndex = codeArray.indexOf(line)
                         } else {
@@ -59,38 +59,80 @@ const inject = function(targetFilePath, payloadArray) {
                         }
 
                         // prefix tabs with each line in payload.injection
-                        let injectionArray = payload.injection.split('\n')
-                        let paddedInjectionArray = injectionArray.map((injection) => {
-                            return (tabString + injection)
-                        })
+                        let injectionArray = payload.injection.split("\n")
+                        let paddedInjectionArray = injectionArray.map(
+                            injection => {
+                                return tabString + injection
+                            }
+                        )
                         // convert paddedInjectionArray into string
-                        tabbedInjection = paddedInjectionArray.join('\n')
+                        tabbedInjection = paddedInjectionArray.join("\n")
                     }
                 })
                 // if search pattern is found, perform code injection
-                if(insertIndex !== -1)
-                {
+                if (insertIndex !== -1) {
                     // splice adds code at specified index
                     // 0 means no elements are deleted from array
                     codeArray.splice(insertIndex, 0, tabbedInjection)
 
                     // reset values for next payload iteration
                     insertIndex = -1
-                    tabString = ''
-                    tabbedInjection = ''
+                    tabString = ""
+                    tabbedInjection = ""
                 }
             })
 
             // make a string from the codeArray
             let codeString = ""
-            codeString = codeArray.join('\n')
+            codeString = codeArray.join("\n")
             // fs.writeFile the string in target file
-            fs.writeFile(targetFilePath, codeString, (error) => {
-                error === null ? console.log('code injections successfull') : console.log(err);
+            fs.writeFile(targetFilePath, codeString, error => {
+                error === null
+                    ? console.log("code injections successfull")
+                    : console.log(err)
             })
-            codeString = ''
+            codeString = ""
         }
     })
 }
 
-module.exports = { inject }
+/**
+ * removes specified code snippet from specified code file
+ * @param {string} targetFilePath Path to codefile to be modified
+ * @param {Array} payloadArray  objects array with code injections
+ **/
+const remove = function(targetFilePath, payloadArray) {
+    // open target file
+    fs.readFile(targetFilePath, (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            // read codefile's code in an array
+            let code = data.toString()
+            let codeArray = code.split("\n")
+            
+            // loop through each payload item
+            payloadArray.forEach((payload) => {
+                // loop thourgh each codeArray line to check if codeToDelete is found
+                codeArray.forEach((line) => {
+                    if(line.includes(payload.codeToRemove)){
+                        codeArray.splice(codeArray.indexOf(line), 1)
+                    }
+                })
+            })
+
+            // make a string from the codeArray
+            let codeString = ""
+            codeString = codeArray.join("\n")
+            // fs.writeFile the string in target file
+            fs.writeFile(targetFilePath, codeString, error => {
+                error === null
+                    ? console.log("code deletions successfull")
+                    : console.log(err)
+            })
+            codeString = ""
+        }
+    })
+}
+
+module.exports = { inject, remove }
