@@ -33,52 +33,64 @@ const inject = function(targetFilePath, payloadArray) {
 
             // loop through the payloadArray and perform all injections
             payloadArray.forEach(payload => {
-                // loop through each line in codeArray and check if search pattern is found
-                codeArray.forEach(line => {
-                    if (line.includes(payload.searchPattern)) {
-                        // insertIndex stores the index for adding code injection
-                        if (payload.injectAbove) {
-                            // inject code snippet above search pattern code line
-                            insertIndex = codeArray.indexOf(line)
-                        } else {
-                            // inject code snippet below search pattern code line
-                            insertIndex = codeArray.indexOf(line) + 1
-                        }
-                        // find number of tabs before search pattern line
-                        // this will be the base tabs count for code injection lines
-                        for (let index = 0; index < line.length; index++) {
-                            if (line.charCodeAt(index) == 32) {
-                                tabString += " "
-                            } else {
-                                break
-                            }
-                        }
-                        // add payload's tabs to tabString
-                        for (let index = 0; index < payload.tabs; index++) {
-                            tabString += " "
-                        }
 
-                        // prefix tabs with each line in payload.injection
-                        let injectionArray = payload.injection.split("\n")
-                        let paddedInjectionArray = injectionArray.map(
-                            injection => {
-                                return tabString + injection
-                            }
-                        )
-                        // convert paddedInjectionArray into string
-                        tabbedInjection = paddedInjectionArray.join("\n")
+                // does payload.injection already exists?
+                // loop through codeArray and find out...
+                let canInject = true
+                codeArray.forEach((line) => {
+                    if(line.includes(payload.injection) && !payload.allowDuplicates){
+                        canInject = false
+                        return
                     }
                 })
-                // if search pattern is found, perform code injection
-                if (insertIndex !== -1) {
-                    // splice adds code at specified index
-                    // 0 means no elements are deleted from array
-                    codeArray.splice(insertIndex, 0, tabbedInjection)
+                if(canInject){
+                    // loop through each line in codeArray and check if search pattern is found
+                    codeArray.forEach(line => {
+                        if (line.includes(payload.searchPattern)) {
+                            // insertIndex stores the index for adding code injection
+                            if (payload.injectAbove) {
+                                // inject code snippet above search pattern code line
+                                insertIndex = codeArray.indexOf(line)
+                            } else {
+                                // inject code snippet below search pattern code line
+                                insertIndex = codeArray.indexOf(line) + 1
+                            }
+                            // find number of tabs before search pattern line
+                            // this will be the base tabs count for code injection lines
+                            for (let index = 0; index < line.length; index++) {
+                                if (line.charCodeAt(index) == 32) {
+                                    tabString += " "
+                                } else {
+                                    break
+                                }
+                            }
+                            // add payload's tabs to tabString
+                            for (let index = 0; index < payload.tabs; index++) {
+                                tabString += " "
+                            }
 
-                    // reset values for next payload iteration
-                    insertIndex = -1
-                    tabString = ""
-                    tabbedInjection = ""
+                            // prefix tabs with each line in payload.injection
+                            let injectionArray = payload.injection.split("\n")
+                            let paddedInjectionArray = injectionArray.map(
+                                injection => {
+                                    return tabString + injection
+                                }
+                            )
+                            // convert paddedInjectionArray into string
+                            tabbedInjection = paddedInjectionArray.join("\n")
+                        }
+                    })
+                    // if search pattern is found, perform code injection
+                    if (insertIndex !== -1) {
+                        // splice adds code at specified index
+                        // 0 means no elements are deleted from array
+                        codeArray.splice(insertIndex, 0, tabbedInjection)
+
+                        // reset values for next payload iteration
+                        insertIndex = -1
+                        tabString = ""
+                        tabbedInjection = ""
+                    }
                 }
             })
 
