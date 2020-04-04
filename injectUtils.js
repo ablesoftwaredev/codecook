@@ -39,7 +39,27 @@ const saveUpdatedCode = function(targetFilePath, codeArray) {
     codeString = ""
 }
 
+/**
+ * gets the index in codeArray where code will be injected
+ * @param {String[]} codeArray array of lines of code from target file
+ * @param {String} line a line of code in codeArray
+ * @param {Boolean} injectAbove inject code above or below?
+ */
+const getInsertIndex = function(codeArray, line, injectAbove=false) {
+   // insertIndex stores the index for adding code injection
+   let insertIndex = -1
+   if (injectAbove) {
+    // inject code snippet above search pattern code line
+    insertIndex = codeArray.indexOf(line)
+    } else {
+        // inject code snippet below search pattern code line
+        insertIndex = codeArray.indexOf(line) + 1
+    }
+    return insertIndex
+}
+
 module.exports = { 
     checkForDuplicateCode,
-    saveUpdatedCode
+    saveUpdatedCode,
+    getInsertIndex
 }
