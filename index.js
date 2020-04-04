@@ -91,17 +91,8 @@ const inject = function(targetFilePath, payloadArray) {
                 }
             })
 
-            // TODO: refactor
-            // make a string from the codeArray
-            let codeString = ""
-            codeString = codeArray.join("\n")
-            // fs.writeFile the string in target file
-            fs.writeFile(targetFilePath, codeString, error => {
-                error === null
-                    ? console.log("code injections successfull")
-                    : console.log(err)
-            })
-            codeString = ""
+            // save the updated code in target file
+            injectUtils.saveUpdatedCode(targetFilePath, codeArray)
         }
     })
 }
