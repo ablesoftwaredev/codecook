@@ -41,26 +41,14 @@ const inject = function(targetFilePath, payloadArray) {
                 if(canInject){
                     // loop through each line in codeArray and check if search pattern is found
                     codeArray.forEach(line => {
-                        // TODO: refactor -> getTabString, getTabbedInjection, getInsertIndex
+                        // TODO: refactor -> getTabString, getTabbedInjection
                         if (line.includes(payload.searchPattern)) {
-                            // // insertIndex stores the index for adding code injection
+                            // insertIndex stores the index for adding code injection
                             insertIndex = injectUtils.getInsertIndex(codeArray, line, payload.injectAbove)
 
-                            // find number of tabs before search pattern line
-                            // this will be the base tabs count for code injection lines
-                            // TODO: refactor
-                            for (let index = 0; index < line.length; index++) {
-                                if (line.charCodeAt(index) == 32) {
-                                    tabString += " "
-                                } else {
-                                    break
-                                }
-                            }
-                            // TODO: refactor
-                            // add payload's tabs to tabString
-                            for (let index = 0; index < payload.tabs; index++) {
-                                tabString += " "
-                            }
+                            // get tabString
+                            tabString = injectUtils.getTabString(line, payload.tabs)
+
                             // TODO: refactor
                             // prefix tabs with each line in payload.injection
                             let injectionArray = payload.injection.split("\n")

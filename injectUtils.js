@@ -58,8 +58,33 @@ const getInsertIndex = function(codeArray, line, injectAbove=false) {
     return insertIndex
 }
 
+/**
+ * gets the tabString
+ * @param {String} line a line of code in codeArray
+ * @param {Number} numOfTabs how many tabs to prefix?
+ */
+const getTabString = function(line, numOfTabs) {
+    let tabString = ""
+    
+    // create tabString
+    for (let index = 0; index < line.length; index++) {
+        if (line.charCodeAt(index) == 32) {
+            tabString += " "
+        } else {
+            break
+        }
+    }
+    // add payload's tabs to tabString
+    for (let index = 0; index < numOfTabs; index++) {
+        tabString += " "
+    }
+
+    return tabString
+}
+
 module.exports = { 
     checkForDuplicateCode,
     saveUpdatedCode,
-    getInsertIndex
+    getInsertIndex,
+    getTabString
 }
