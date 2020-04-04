@@ -2,15 +2,19 @@
  * Responsibility:
  * contains functions for the inject() command
  */
-const fs = require('fs')
- 
+const fs = require("fs")
+
 /**
  * returns true if injection code is already present
  * @param {String[]} codeArray array of lines of code from target file
- * @param {String} injection code to be injected 
+ * @param {String} injection code to be injected
  * @param {Boolean} allowDuplicates is duplicate code allowed?
  */
-const checkForDuplicateCode = function (codeArray, injection, allowDuplicates=false) {
+const checkForDuplicateCode = function (
+    codeArray,
+    injection,
+    allowDuplicates = false
+) {
     // does payload.injection already exists?
     // loop through codeArray and find out...
     let canInject = true
@@ -28,10 +32,10 @@ const checkForDuplicateCode = function (codeArray, injection, allowDuplicates=fa
  * @param {String} targetFilePath path to the target file
  * @param {String[]} codeArray array of lines of code from target file
  */
-const saveUpdatedCode = function(targetFilePath, codeArray) {
+const saveUpdatedCode = function (targetFilePath, codeArray) {
     let codeString = ""
     codeString = codeArray.join("\n")
-    fs.writeFile(targetFilePath, codeString, error => {
+    fs.writeFile(targetFilePath, codeString, (error) => {
         error === null
             ? console.log("code injections successfull")
             : console.log(err)
@@ -45,12 +49,12 @@ const saveUpdatedCode = function(targetFilePath, codeArray) {
  * @param {String} line a line of code in codeArray
  * @param {Boolean} injectAbove inject code above or below?
  */
-const getInsertIndex = function(codeArray, line, injectAbove=false) {
-   // insertIndex stores the index for adding code injection
-   let insertIndex = -1
-   if (injectAbove) {
-    // inject code snippet above search pattern code line
-    insertIndex = codeArray.indexOf(line)
+const getInsertIndex = function (codeArray, line, injectAbove = false) {
+    // insertIndex stores the index for adding code injection
+    let insertIndex = -1
+    if (injectAbove) {
+        // inject code snippet above search pattern code line
+        insertIndex = codeArray.indexOf(line)
     } else {
         // inject code snippet below search pattern code line
         insertIndex = codeArray.indexOf(line) + 1
@@ -63,9 +67,9 @@ const getInsertIndex = function(codeArray, line, injectAbove=false) {
  * @param {String} line a line of code in codeArray
  * @param {Number} numOfTabs how many tabs to prefix?
  */
-const getTabString = function(line, numOfTabs) {
+const getTabString = function (line, numOfTabs) {
     let tabString = ""
-    
+
     // create tabString
     for (let index = 0; index < line.length; index++) {
         if (line.charCodeAt(index) == 32) {
@@ -82,9 +86,30 @@ const getTabString = function(line, numOfTabs) {
     return tabString
 }
 
-module.exports = { 
+/**
+ * gets the tabbedInjection
+ * @param {String} injection code to be injected
+ * @param {String} tabString string with tabs 
+ */
+const getTabbedInjection = function (injection, tabString) {
+    let tabbedInjection = ""
+
+    // prefix tabs with each line in payload.injection
+    let injectionArray = injection.split("\n")
+    let paddedInjectionArray = injectionArray.map((injection) => {
+        return tabString + injection
+    })
+
+    // convert paddedInjectionArray into string
+    tabbedInjection = paddedInjectionArray.join("\n")
+
+    return tabbedInjection
+}
+
+module.exports = {
     checkForDuplicateCode,
     saveUpdatedCode,
     getInsertIndex,
-    getTabString
+    getTabString,
+    getTabbedInjection,
 }
