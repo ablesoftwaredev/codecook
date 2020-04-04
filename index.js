@@ -6,6 +6,7 @@
 const fs = require("fs")
 const path = require("path")
 const injectUtils = require('./injectUtils')
+const removeUtils = require('./removeUtils')
 
 /**
  * loops over the payloadArray and injects code snippets at specified patterns
@@ -97,16 +98,8 @@ const remove = function(targetFilePath, payloadArray) {
                 })
             })
 
-            // make a string from the codeArray
-            let codeString = ""
-            codeString = codeArray.join("\n")
-            // fs.writeFile the string in target file
-            fs.writeFile(targetFilePath, codeString, error => {
-                error === null
-                    ? console.log("code deletions successfull")
-                    : console.log(err)
-            })
-            codeString = ""
+            // save updated code in target file
+            removeUtils.saveUpdatedCode(targetFilePath, codeArray)
         }
     })
 }
