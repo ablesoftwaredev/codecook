@@ -5,6 +5,7 @@
  */
 const fs = require("fs")
 const path = require("path")
+const injectUtils = require('./injectUtils')
 
 /**
  * loops over the payloadArray and injects code snippets at specified patterns
@@ -33,16 +34,10 @@ const inject = function(targetFilePath, payloadArray) {
 
             // loop through the payloadArray and perform all injections
             payloadArray.forEach(payload => {
-
                 // does payload.injection already exists?
                 // loop through codeArray and find out...
                 let canInject = true
-                codeArray.forEach((line) => {
-                    if(line.includes(payload.injection) && !payload.allowDuplicates){
-                        canInject = false
-                        return
-                    }
-                })
+                canInject = injectUtils.checkForDuplicateCode(codeArray, payload.injection)
                 if(canInject){
                     // loop through each line in codeArray and check if search pattern is found
                     codeArray.forEach(line => {
@@ -57,6 +52,7 @@ const inject = function(targetFilePath, payloadArray) {
                             }
                             // find number of tabs before search pattern line
                             // this will be the base tabs count for code injection lines
+                            // TODO: refactor
                             for (let index = 0; index < line.length; index++) {
                                 if (line.charCodeAt(index) == 32) {
                                     tabString += " "
@@ -64,11 +60,12 @@ const inject = function(targetFilePath, payloadArray) {
                                     break
                                 }
                             }
+                            // TODO: refactor
                             // add payload's tabs to tabString
                             for (let index = 0; index < payload.tabs; index++) {
                                 tabString += " "
                             }
-
+                            // TODO: refactor
                             // prefix tabs with each line in payload.injection
                             let injectionArray = payload.injection.split("\n")
                             let paddedInjectionArray = injectionArray.map(
@@ -94,6 +91,7 @@ const inject = function(targetFilePath, payloadArray) {
                 }
             })
 
+            // TODO: refactor
             // make a string from the codeArray
             let codeString = ""
             codeString = codeArray.join("\n")
