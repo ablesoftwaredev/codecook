@@ -7,7 +7,7 @@ const fs = require("fs")
 const path = require("path")
 const injectUtils = require('./injectUtils')
 const removeUtils = require('./removeUtils')
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * loops over the payloadArray and injects code snippets at specified patterns
  * @param {string} targetFilePath Path to codefile to be modified
@@ -73,7 +73,7 @@ const inject = function(targetFilePath, payloadArray) {
         }
     })
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * removes specified code snippet from specified code file
  * @param {string} targetFilePath Path to codefile to be modified
@@ -91,12 +91,23 @@ const remove = function(targetFilePath, payloadArray) {
             
             // loop through each payload item
             payloadArray.forEach((payload) => {
-                // loop thourgh each codeArray line to check if codeToDelete is found
-                codeArray.forEach((line) => {
-                    if(line.includes(payload.codeToRemove)){
-                        codeArray.splice(codeArray.indexOf(line), 1)
+                // check if codeToDelete is found in codeArray
+                let canDelete = removeUtils.doesCodeToDeleteExist(codeArray, payload.codeToRemove)
+                if(canDelete){
+                    // make an array from payload.codeToRemove
+                    let codeToRemoveArray = payload.codeToRemove.split('\n')
+                    // get the num of lines in payload.codeToRemove
+                    let numOfLinesToDelete = codeToRemoveArray.length
+                    // loop through codeArray and match line 0 of codeToRemoveArray
+                    let deleteStartIndex = 0
+                    for (let index = 0; index < codeArray.length; index++) {
+                        if(codeArray[index].includes(codeToRemoveArray[0])){
+                            deleteStartIndex = index
+                            break
+                        }
                     }
-                })
+                    codeArray.splice(deleteStartIndex, numOfLinesToDelete)
+                }
             })
 
             // save updated code in target file
@@ -104,5 +115,5 @@ const remove = function(targetFilePath, payloadArray) {
         }
     })
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 module.exports = { inject, remove }

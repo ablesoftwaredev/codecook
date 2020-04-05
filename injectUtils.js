@@ -8,12 +8,10 @@ const fs = require("fs")
  * returns true if injection code is already present
  * @param {String[]} codeArray array of lines of code from target file
  * @param {String} injection code to be injected
- * @param {Boolean} allowDuplicates is duplicate code allowed?
  */
 const checkForDuplicateCode = function (
     codeArray,
-    injection,
-    allowDuplicates = false
+    injection
 ) {
     // does payload.injection already exists?
     // loop through codeArray and find out...
