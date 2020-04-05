@@ -37,8 +37,9 @@ const inject = function(targetFilePath, payloadArray) {
             payloadArray.forEach(payload => {
                 // does payload.injection already exists?
                 // loop through codeArray and find out...
-                let canInject = true
-                canInject = injectUtils.checkForDuplicateCode(codeArray, payload.injection)
+                // let canInject = true
+                // canInject = injectUtils.checkForDuplicateCode(codeArray, payload.injection)
+                let canInject = injectUtils.checkForDuplicateCode(codeArray, payload.injection)
                 if(canInject){
                     // loop through each line in codeArray and check if search pattern is found
                     codeArray.forEach(line => {

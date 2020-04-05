@@ -3,7 +3,7 @@
  * contains functions for the inject() command
  */
 const fs = require("fs")
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * returns true if injection code is already present
  * @param {String[]} codeArray array of lines of code from target file
@@ -17,16 +17,27 @@ const checkForDuplicateCode = function (
 ) {
     // does payload.injection already exists?
     // loop through codeArray and find out...
-    let canInject = true
+    let codeString = ""
     codeArray.forEach((line) => {
-        if (line.includes(injection) && !allowDuplicates) {
-            canInject = false
-            return
+        for (const char of line) {
+            if (char !== " ") {
+                codeString += char
+            }
         }
     })
+    const injectionArray = injection.split("\n")
+    let injectionString = ""
+    injectionArray.forEach((line) => {
+        for (const char of line) {
+            if (char !== " ") {
+                injectionString += char
+            }
+        }
+    })
+    let canInject = codeString.includes(injectionString) ? false : true
     return canInject
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * writes the updated code in target file
  * @param {String} targetFilePath path to the target file
@@ -37,12 +48,12 @@ const saveUpdatedCode = function (targetFilePath, codeArray) {
     codeString = codeArray.join("\n")
     fs.writeFile(targetFilePath, codeString, (error) => {
         error === null
-            ? console.log("code injections successfull")
+            ? console.log("code injections successful")
             : console.log(err)
     })
     codeString = ""
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * gets the index in codeArray where code will be injected
  * @param {String[]} codeArray array of lines of code from target file
@@ -61,7 +72,7 @@ const getInsertIndex = function (codeArray, line, injectAbove = false) {
     }
     return insertIndex
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * gets the tabString
  * @param {String} line a line of code in codeArray
@@ -85,11 +96,11 @@ const getTabString = function (line, numOfTabs) {
 
     return tabString
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 /**
  * gets the tabbedInjection
  * @param {String} injection code to be injected
- * @param {String} tabString string with tabs 
+ * @param {String} tabString string with tabs
  */
 const getTabbedInjection = function (injection, tabString) {
     let tabbedInjection = ""
@@ -105,7 +116,7 @@ const getTabbedInjection = function (injection, tabString) {
 
     return tabbedInjection
 }
-
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 module.exports = {
     checkForDuplicateCode,
     saveUpdatedCode,
