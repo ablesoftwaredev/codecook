@@ -60,7 +60,7 @@ codecook.inject(targetFilePath, payloadArray)
 - [x] inject single line of code 
 - [x] inject multiple lines of code
 - [x] check if the single line being injected already exists
-- [ ] check for duplicate multiple lines of code when injecting [WIP]
+- [x] check for duplicate multiple lines of code when injecting
 
 
 #### How to Remove Code
@@ -81,7 +81,7 @@ codecook.remove(targetFilePath, payloadArray)
 ```
 #### remove() updates
 - [x] can remove single line of code
-- [ ] remove multiple lines of code [WIP]
+- [x] remove multiple lines of code
 
 
 Suggestions, bugs, enhancements are welcome via PR. Hope you find this library helpful!
