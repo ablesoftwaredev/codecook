@@ -10,7 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/ablesoftwaredev/codecook.git"
   },
-  "keywords": [],
+  "keywords": [
+    "code generation",
+    "code creation",
+    "create code",
+    "format code",
+    "add code",
+    "delete code",
+    "code snippets",
+    "codecook",
+    "code formatter"
+  ],
   "author": "AbleSoftwareDev",
   "license": "MIT",
   "bugs": {
