@@ -29,7 +29,7 @@ const codecook = require('codecook')
 ```
 
 #### How to Inject Code
-```
+```javascript
 // specify params
 const targetFilePath = 'absolutePath/to/target/file'
 const payloadArray = [
@@ -64,7 +64,7 @@ codecook.inject(targetFilePath, payloadArray)
 
 
 #### How to Remove Code
-```
+```javascript
 // specify params
 const targetFilePath = 'absolutePath/to/target/file'
 const payloadArray = [
